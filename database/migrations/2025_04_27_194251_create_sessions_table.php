@@ -11,14 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+         // Check if the table doesn't already exist before creating it
+    if (!Schema::hasTable('sessions')) {
         Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
+            $table->string('id')->primary(); // Primary key for session ID
+            $table->foreignId('user_id')->nullable()->index(); // User foreign key (nullable)
+            $table->string('ip_address', 45)->nullable(); // Store IP address (nullable)
+            $table->text('user_agent')->nullable(); // Store user agent (nullable)
+            $table->longText('payload'); // Session payload (data)
+            $table->integer('last_activity')->index(); // Last activity timestamp, indexed
         });
+    }
     }
 
     /**
